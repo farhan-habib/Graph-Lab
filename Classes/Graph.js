@@ -5,12 +5,15 @@ class Graph {
 	get nodes() {
 		return this.#nodes;
 	}
-	addNode(name, value = name) {
-		let node = new GNode(value);
+	addNode(name) {
+		if(this.#nodes[name] != null) throw new Error(`A node with the name \"${name}\" already exists`);
+		let node = new GNode(name);
 		this.#nodes[name] = (node);
 	}
 	addConnection(nodeFrom, nodeTo, weight){
-	this.#nodes[nodeFrom].addConnection(nodeTo, weight);
+		if(this.#nodes[nodeFrom] == null) throw new Error(`Node \"${nodeFrom}\" does not exist`);
+		if(this.#nodes[nodeTo] == null) throw new Error(`Node \"${nodeTo}\" does not exist`);
+	this.#nodes[nodeFrom].addConnection(this.#nodes[nodeTo], weight);
 	}
 }
 

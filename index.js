@@ -18,12 +18,19 @@ const fileContents = fs.readFileSync(filePath, "utf8");
 //split the file into an 2d array which represents the adjacency matrix of the graph.
 const adjacenyMatrix = fileContents.split("\n").map(row => row.split(" ").map(n => +n));
 
+let graph = new Graph();
+
+for (let fromIndex = 0; fromIndex < adjacenyMatrix.length; fromIndex++) {
+	graph.addNode(fromIndex);	
+}
+
+for (let fromIndex = 0; fromIndex < adjacenyMatrix.length; fromIndex++) {
+	for (let toIndex = 0; toIndex < adjacenyMatrix.length; toIndex++) {
+		if (adjacenyMatrix[fromIndex][toIndex] != 0) {
+			graph.addConnection(fromIndex, toIndex, adjacenyMatrix[fromIndex][toIndex]);
+		}
+	}
+	
+}
 
 
-// let graph = new Graph();
-// graph.addNode("test");
-// graph.addNode("test2");
-// graph.addConnection("test", "test2", 1);
-
-
-// console.log(graph.nodes);
