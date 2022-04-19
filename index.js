@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { Graph } = require("./classes/graph/graph.js");
+const { Graph } = require("./Classes/graph/Graph.js");
 const { Heap } = require("./Classes/heap.js");
 
 //commandline input

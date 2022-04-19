@@ -1,4 +1,4 @@
-const {GEdge} = require("./Gedge.js");
+const {GEdge} = require("./GEdge.js");
 class GNode{
 	#value;
 	constructor(value){
