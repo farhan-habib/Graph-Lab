@@ -11,7 +11,8 @@ class GNode{
 
 	#connections = [];
 	get connections(){
-		return this.#connections;
+		return this.#connections.map(m=> ({node: m.node.value, weight: m.weight}));
+		// return this.#connections.map(m => {m.node.value, m.weight});
 	}
 	addConnection(node, weight){
 		let edge = new GEdge(node, weight);
