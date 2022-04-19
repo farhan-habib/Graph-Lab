@@ -37,7 +37,7 @@ for (let fromIndex = 0; fromIndex < adjacenyMatrix.length; fromIndex++) {
 		}
 	}
 }
-
+{
 /*
 .########..########..####.##.....##.##.....##..######.
 .##.....##.##.....##..##..###...###.###...###.##....##
@@ -98,5 +98,87 @@ for (let i = 0; i < primGraph.nodes.length; i++) {
 }
 
 primOutput = primOutput.map((m) => m.join(" ")).join("\n");
+console.log("## Minimum Spanning Tree")
+console.log();
 console.log(primOutput);
-console.log(primCost);
+console.log(`Cost: ${primCost}`);
+}
+console.log();
+{
+/*
+.########........##.####.##....##..######..########.########.....###...
+.##.....##.......##..##..##...##..##....##....##....##.....##...##.##..
+.##.....##.......##..##..##..##...##..........##....##.....##..##...##.
+.##.....##.......##..##..#####.....######.....##....########..##.....##
+.##.....##.##....##..##..##..##.........##....##....##...##...#########
+.##.....##.##....##..##..##...##..##....##....##....##....##..##.....##
+.########...######..####.##....##..######.....##....##.....##.##.....##
+*/
+
+//for our implementation of djikstra's algorithm, we want to always go from node A to node F
+//for this project in specific, A will always be at position 0 of the input array, and B will always be at position 5 of the array.
+
+//for our purposes, if the weight of a graph is negative one, then it is an infinite weight.
+let djikstraDistance = Array(inputGraph.nodes.length).fill({from: null, weight: -1});
+let start = +inputGraph.nodes[0]; //A
+let end = +inputGraph.nodes[5];	//F
+// djikstraDistance
+djikstraDistance[start] = {from: null,weight: 0};
+
+let visited = [];
+
+let curr = start;
+
+while(curr != end){
+
+	visited.push(curr);
+	let currEdges = inputGraph.nodeInfo(curr);
+	//replace any edges in the djikstrasDistance array with the new weight if the new weight is less than the old weight
+	for (let i = 0; i < currEdges.length; i++) {
+		let currWeight = djikstraDistance[curr].weight + currEdges[i].weight;
+		if (djikstraDistance[currEdges[i].node].weight == -1 || currWeight < djikstraDistance[currEdges[i].node].weight) {
+			djikstraDistance[currEdges[i].node] = {from: +curr, weight: currWeight};
+		}
+	}
+	//find the node with the smallest weight in the djikstraDistance array that is not in the visited array
+	let lowestWeight = -1;
+	let lowestWeightNode = null;
+	for (let i = 0; i < djikstraDistance.length; i++) {
+		if (visited.includes(i)) continue;
+		if (djikstraDistance[i].weight == -1) continue;
+		if ((lowestWeight == -1) || (djikstraDistance[i].weight < lowestWeight)) {
+			lowestWeight = djikstraDistance[i].weight;
+			lowestWeightNode = i;
+		}
+	}
+	curr = lowestWeightNode;
+}
+
+//find djikstra's path
+let djikstraPath = [];
+let currNode = end;
+while(currNode != start){
+	djikstraPath.push(currNode);
+	currNode = djikstraDistance[currNode].from;
+}
+djikstraPath.push(start);
+djikstraPath.reverse();
+
+//for this lab in specific, the nodes in positions 0-6 correspond to the letters A-G
+let correspondingValues = {
+	0: "A",
+	1: "B",
+	2: "C",
+	3: "D",
+	4: "E",
+	5: "F",
+	6: "G",
+};
+djikstraPath = djikstraPath.map((m) => correspondingValues[m]);
+let djikstraPathWeight = djikstraDistance[end].weight;
+
+console.log("## Shortest Path")
+console.log();
+console.log(djikstraPath.join("->"));
+console.log(`Cost: ${djikstraPathWeight.toFixed(1)}`);
+}
